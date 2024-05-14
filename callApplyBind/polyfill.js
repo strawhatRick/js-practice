@@ -1,57 +1,56 @@
 Function.prototype.myCall = function (context, ...args) {
-    let fn = Symbol()
-    context[fn] = this
-    const res = context[fn](...args)
-    delete context[fn]
-    return res
-}
+  let fn = Symbol();
+  context[fn] = this;
+  const res = context[fn](...args);
+  delete context[fn];
+  return res;
+};
 
 Function.prototype.myApply = function (context, ...args) {
-    let fn = Symbol()
-    context[fn] = this
-    const res = context[fn](...args[0])
-    delete context[fn]
-    return res
-}
+  let fn = Symbol();
+  context[fn] = this;
+  const res = context[fn](...args[0]);
+  delete context[fn];
+  return res;
+};
 
 Function.prototype.myBind = function (context, ...args) {
-    const fn = this
-    return function boundFn (...passedArgs) {
-        return fn.myApply(context, [...args, ...passedArgs])
-    }
-}
-
+  const fn = this;
+  return function boundFn(...passedArgs) {
+    return fn.myApply(context, [...args, ...passedArgs]);
+  };
+};
 
 // Call JS function - polyfill
 const person = {
-    first: 'Amartya',
-    last: 'Mukherjee',
-    greet: function (greeting) {
-        console.log(`${this.first} ${this.last} says ${greeting}!`)
-    }
-}
-person.greet('Hi')
+  first: "Amartya",
+  last: "Mukherjee",
+  greet: function (greeting) {
+    console.log(`${this.first} ${this.last} says ${greeting}!`);
+  },
+};
+person.greet("Hi");
 const visitor = {
-    first: 'Uncle Sam'
-}
-console.log('Call example')
-person.greet.myCall(visitor, 'Howdy partner')
+  first: "Uncle Sam",
+};
+console.log("Call example");
+person.greet.myCall(visitor, "Howdy partner");
 
 // Apply JS function - polyfill
-const num = [1,2,3,5,4,6,73,7,6]
+const num = [1, 2, 3, 5, 4, 6, 73, 7, 6];
 
-function sum (...args) {
-    console.log(args)
-    let total = 0
-    for (let arg of args) {
-        total = total + arg
-    }
-    return total
+function sum(...args) {
+  console.log(args);
+  let total = 0;
+  for (let arg of args) {
+    total = total + arg;
+  }
+  return total;
 }
-console.log('Apply example')
-sum(1,2,3)
-const total = sum.myApply({}, num)
-console.log(total)
+console.log("Apply example");
+sum(1, 2, 3);
+const total = sum.myApply({}, num);
+console.log(total);
 
 // Bind JS function - polyfill
 
@@ -84,7 +83,7 @@ const randomData2 = {
     return res;
   },
 };
-console.log('Bind example')
+console.log("Bind example");
 randomData.showData();
 const boundedShowData = randomData.showData.myBind(randomData2);
 boundedShowData();
